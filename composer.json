@@ -4,14 +4,19 @@
     "type": "project",
     "license": "MIT",
     "autoload": {
-        "psr-4": { "BankReader\\": "src/BankReader" }
+        "psr-4": { "BankReader\\": "src/BankReader" },
+        "classmap": [
+            "app/AppKernel.php"
+        ]
     },
     "require": {
         "phpoffice/phpexcel": "dev-master",
         "symfony/finder": "^3.1",
         "symfony/var-dumper": "^3.1",
-        "twig/twig": "~1.0"
+        "twig/twig": "~1.0",
+        "symfony/yaml": "^3.1"
     },
+
     "authors": [
         {
             "name" : "Pablo Llorens",

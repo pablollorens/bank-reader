@@ -16,8 +16,8 @@ class Transaction
     /** @var  array */
     protected $keywords;
 
-    /** @var  int */
-    protected $category;
+    /** @var  array */
+    protected $categories;
 
     public function __construct()
     {
@@ -25,7 +25,7 @@ class Transaction
         $this->amount = null;
         $this->description = null;
         $this->keywords = array();
-        $this->category = null;
+        $this->categories = array();
     }
 
     /**
@@ -106,18 +106,18 @@ class Transaction
     /**
      * @return int
      */
-    public function getCategory()
+    public function getCategories()
     {
-        return $this->category;
+        return $this->categories;
     }
 
     /**
      * @param int $category
      * @return Transaction
      */
-    public function setCategory($category)
+    public function addCategory($category)
     {
-        $this->category = $category;
+        $this->categories[] = $category;
         return $this;
     }
 

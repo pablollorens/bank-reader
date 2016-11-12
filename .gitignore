@@ -3,4 +3,4 @@ composer.phar
 /var/cache
 .idea
 
-/Resources/data
+/web/data

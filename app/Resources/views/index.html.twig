@@ -1,0 +1,20 @@
+<table>
+{% for year, months in totals %}
+    <tr>
+        <td><h1>{{ year }}</h1></td>
+    <tr>
+        {% for month, categories in months %}
+            <tr>
+            <td>{{ month }}</td>
+            <td>
+                <ul>
+                {% for name, amount in categories %}
+                    <li><strong>{{ name }}</strong>: {{ amount |number_format }} &euro;</li>
+                {% endfor %}
+                </ul>
+            </td>
+            </tr>
+        {% endfor %}
+    </tr>
+{% endfor %}
+</table>

@@ -2,6 +2,7 @@
 
 namespace BankReader\File;
 
+use BankReader\Core\Kernel;
 use BankReader\Model\Transaction;
 use Symfony\Component\Finder\Finder;
 use PHPExcel_IOFactory;
@@ -11,13 +12,22 @@ class Parser
 {
     protected $initialFolder = '';
 
-    const TRANSACTION_DATE_COLUMN = 'C';
-    const AMOUNT_COLUMN = 'G';
-    const DESCRIPTION_COLUMN = 'H';
+    protected $transactionDateColumn = 'C';
+    protected $amountColumn = 'G';
+    protected $descriptionColumn = 'H';
 
-    public function __construct($initialFolder = '')
+    public function __construct($container)
     {
-        $this->initialFolder = $initialFolder;
+        $parameters = $container->getParameters();
+
+        /** @var Kernel $kernel */
+        $kernel = $container->getKernel();
+
+        $this->initialFolder = $kernel->getRootDir() . $parameters['data_folder'];
+
+        $this->transactionDateColumn = $parameters['excel']['transaction_date_column'];
+        $this->amountColumn = $parameters['excel']['amount_column'];
+        $this->descriptionColumn = $parameters['excel']['description_column'];
     }
 
     public function parse()
@@ -37,14 +47,18 @@ class Parser
             foreach($sheetData as $row) {
                 $transaction = new Transaction();
 
-                $transaction->setDate(\DateTime::createFromFormat('Ymd', $row[self::TRANSACTION_DATE_COLUMN]));
+                $transaction->setDate(\DateTime::createFromFormat('Ymd', $row[$this->transactionDateColumn]));
 
-                $transaction->setAmount(floatval($row[self::AMOUNT_COLUMN]));
+                $amount = floatval($row[$this->amountColumn]);
+                if ($amount < 0) {
+                    $amount *= -1;
+                }
+                $transaction->setAmount($amount);
 
-                $transaction->setDescription($row[self::DESCRIPTION_COLUMN]);
+                $transaction->setDescription($row[$this->descriptionColumn]);
 
                 // Retrieve keywords
-                $explode = explode(' ', $row[self::DESCRIPTION_COLUMN]);
+                $explode = explode(' ', $row[$this->descriptionColumn]);
                 $array_map = array_map('strtolower', $explode);
 
                 $transaction->setKeywords($array_map);

@@ -1,0 +1,11 @@
+data_folder: '/web/data'
+
+excel:
+    transaction_date_column: 'C'
+    amount_column: 'G'
+    description_column: 'H'
+
+categories:
+    - supermarkets: ["heijn", "jumbo", "feyter", "lidl", "slagerij"]
+    - transport: ["picobello"]
+    - fast-food: ["domino's", "mcdonald's", "amigo"]
