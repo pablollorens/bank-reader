@@ -2,7 +2,7 @@
 
 namespace BankReader\Core;
 
-use BankReader\File\Parser;
+use BankReader\Data\Loader;
 use Symfony\Component\Yaml\Yaml;
 use Twig_Loader_Filesystem;
 use Twig_Environment;
@@ -33,14 +33,9 @@ abstract class Kernel implements KernelInterface
         $container->addService('twig', $twig);
 
         // Load Transactions
-        $parser = new Parser($container);
-        $container->addService('parser', $parser);
-
-        $transactions = $parser->parse();
+        $transactions = Loader::fromExcelFiles($container);
 
         $container->addService('transactions', $transactions);
-
-        $container->addService('categories', $parameters['categories']);
 
         $this->container = $container;
     }

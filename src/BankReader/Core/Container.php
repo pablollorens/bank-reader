@@ -21,7 +21,7 @@ class Container
         if (isset($this->services[$name])) {
             return $this->services[$name];
         } else {
-            throw new \Exception("Service doesn't exist");
+            throw new \Exception("Service doesn't exist: " . $name);
         }
     }
 
