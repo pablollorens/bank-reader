@@ -14,7 +14,7 @@ class Adaptor
 
         $data = array();
 
-        $data[] = array_merge(array('Date'), $categories);
+        $data[] = $categories;
 
         /** @var Transaction $transaction */
         foreach ($transactions as $transaction) {
