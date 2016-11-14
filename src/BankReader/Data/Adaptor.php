@@ -19,7 +19,7 @@ class Adaptor
         /** @var Transaction $transaction */
         foreach ($transactions as $transaction) {
 
-            $transactionDate = $transaction->getDate()->format('d-m-Y');
+            $transactionDate = $transaction->getDate()->format('Y-m-d');
 
             if (!isset($data[$transactionDate])) {
                 $data[$transactionDate] = self::createRow($categories);

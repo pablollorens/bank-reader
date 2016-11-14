@@ -1,35 +1,85 @@
 <html>
 <head>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi?fake=.js"></script>
     <script type="text/javascript">
-        google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
+        google.load('visualization', '1', {packages: ['controls', 'charteditor']});
+        google.setOnLoadCallback(drawChart);
 
         function drawChart() {
-            var data = google.visualization.arrayToDataTable([
-                {% for date, row in data %}
-                    {% if loop.first %}
-                        ['Date', {% for value in row %}'{{ value }}'{% if not loop.last %}, {% endif %}{% endfor %}]{% if not loop.last %},{% endif %}
-                    {% else %}
-                        ['{{ date }}', {% for value in row %}{{ value }}{% if not loop.last %}, {% endif %}{% endfor %}]{% if not loop.last %},{% endif %}
-                    {% endif %}
-                {% endfor %}
-            ]);
+            var data = new google.visualization.DataTable();
+            data.addColumn('date', 'Date');
+            data.addColumn('number', 'Cat 1');
+            data.addColumn('number', 'Cat 2');
+            data.addColumn('number', 'Cat 3');
 
-            var options = {
-                interpolateNulls: true,
-                title: 'Company Performance',
-                curveType: 'function',
-                legend: { position: 'bottom' }
+            {% for date, row in data %}
+                {% if not loop.first %}
+                    data.addRow([ new Date('{{ date }}'), {% for value in row %}{{ value }}{% if not loop.last %}, {% endif %}{% endfor %}]);
+                {% endif %}
+            {% endfor %}
+            
+            var dash = new google.visualization.Dashboard(document.getElementById('dashboard'));
+
+            var control = new google.visualization.ControlWrapper({
+                controlType: 'ChartRangeFilter',
+                containerId: 'control_div',
+                options: {
+                    filterColumnIndex: 0,
+                    ui: {
+                        chartOptions: {
+                            height: 50,
+                            width: 600,
+                            chartArea: {
+                                width: '80%'
+                            }
+                        },
+                        chartView: {
+                            columns: [0, 1]
+                        }
+                    }
+                }
+            });
+
+            var chart = new google.visualization.ChartWrapper({
+                chartType: 'LineChart',
+                containerId: 'chart_div'
+            });
+
+            function setOptions (wrapper) {
+                // sets the options on the chart wrapper so that it draws correctly
+                wrapper.setOption('interpolateNulls', true);
+                wrapper.setOption('height', 400);
+                wrapper.setOption('width', 600);
+                wrapper.setOption('chartArea.width', '80%');
+                // the chart editor automatically enables animations, which doesn't look right with the ChartRangeFilter
+                wrapper.setOption('animation.duration', 0);
+            }
+            
+            setOptions(chart);
+            
+            document.getElementById('edit').onclick = function () {
+                var editor = new google.visualization.ChartEditor();
+                google.visualization.events.addListener(editor, 'ok', function () {
+                    chart = editor.getChartWrapper();
+                    setOptions(chart);
+                    dash.bind([control], [chart]);
+                    dash.draw(data);
+                });
+                editor.openDialog(chart);
             };
-
-            var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-
-            chart.draw(data, options);
+            
+            dash.bind([control], [chart]);
+            dash.draw(data);
         }
     </script>
 </head>
 <body>
-<div id="curve_chart" style="width: 900px; height: 500px"></div>
+
+<input type="button" id="edit" value="Edit Chart" />
+<div id="dashboard">
+    <div id="chart_div"></div>
+    <div id="control_div"></div>
+</div>
+
 </body>
 </html>
