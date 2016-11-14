@@ -8,10 +8,10 @@
         function drawChart() {
             var data = new google.visualization.DataTable();
             data.addColumn('date', 'Date');
-            data.addColumn('number', 'Cat 1');
-            data.addColumn('number', 'Cat 2');
-            data.addColumn('number', 'Cat 3');
-
+            {% for category_name, keywords in categories %}
+                data.addColumn('number', '{{ category_name }}' );
+            {% endfor %}
+            
             {% for date, row in data %}
                 {% if not loop.first %}
                     data.addRow([ new Date('{{ date }}'), {% for value in row %}{{ value }}{% if not loop.last %}, {% endif %}{% endfor %}]);

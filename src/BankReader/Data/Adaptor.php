@@ -8,25 +8,19 @@ class Adaptor
 {
     public static function prepareLineChartData(array $transactions, array $categories)
     {
-        foreach ($categories as $key => $category) {
-            $categories[$key] = key($category);
-        }
-
         $data = array();
-
-        $data[] = $categories;
 
         /** @var Transaction $transaction */
         foreach ($transactions as $transaction) {
 
-            $transactionDate = $transaction->getDate()->format('Y-m-d');
+            $transactionDate = $transaction->getDate()->format('Y-m');
 
             if (!isset($data[$transactionDate])) {
                 $data[$transactionDate] = self::createRow($categories);
             }
 
-            foreach ($transaction->getCategories() as $category) {
-                $data[$transactionDate][$category] += $transaction->getAmount();
+            foreach ($transaction->getCategories() as $categoryName) {
+                $data[$transactionDate][$categoryName] += $transaction->getAmount();
             }
         }
 
@@ -37,9 +31,9 @@ class Adaptor
     {
         $row = array();
 
-        foreach ($categories as $category)
+        foreach ($categories as $name => $keywords)
         {
-            $row[$category] = 0.0;
+            $row[$name] = 0.0;
         }
 
         return $row;

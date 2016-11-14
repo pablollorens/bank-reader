@@ -25,7 +25,17 @@ class Loader
         $descriptionColumn = $parameters['excel']['description_column'];
 
         // Read categories
-        $categories = $parameters['categories'];
+        $tempCategories = $parameters['categories'];
+
+        $categories = array();
+
+        foreach ($tempCategories as $category) {
+            $name = key($category);
+            $keywords = array_shift($category);
+
+            $categories[$name] = $keywords;
+        }
+
         $container->addService('categories', $categories);
 
         $transactions = array();
@@ -77,14 +87,12 @@ class Loader
         foreach ($transactions as $transaction) {
 
             // Detect from which category is each transaction
-            foreach ($categories as $category) {
-                $categoryName = key($category);
-                $keywords = array_shift($category);
-
+            foreach ($categories as $name => $keywords) {
+            
                 $intersect = array_intersect($transaction->getKeywords(), $keywords);
 
                 if (0 < count($intersect)) {
-                    $transaction->addCategory($categoryName);
+                    $transaction->addCategory($name);
                 }
             }
         }

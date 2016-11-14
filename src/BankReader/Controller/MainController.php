@@ -19,10 +19,13 @@ class MainController
         /** @var \Twig_Template $template */
         $template = $this->container->getTwig()->loadTemplate("index.html.twig");
 
-        $data = Adaptor::prepareLineChartData($this->container->getTransactions(), $this->container->getCategories());
+        $categories = $this->container->getCategories();
+
+        $data = Adaptor::prepareLineChartData($this->container->getTransactions(), $categories);
 
         return $template->render(array(
             'data' => $data,
+            'categories' => $categories,
         ));
     }
 }
