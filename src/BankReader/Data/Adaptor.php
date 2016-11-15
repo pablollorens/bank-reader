@@ -10,6 +10,8 @@ class Adaptor
     {
         $data = array();
 
+        $trash = array();
+
         /** @var Transaction $transaction */
         foreach ($transactions as $transaction) {
 
@@ -19,12 +21,16 @@ class Adaptor
                 $data[$transactionDate] = self::createRow($categories);
             }
 
-            foreach ($transaction->getCategories() as $categoryName) {
-                $data[$transactionDate][$categoryName] += $transaction->getAmount();
+            if (count($transaction->getCategories()) > 0) {
+                foreach ($transaction->getCategories() as $categoryName) {
+                    $data[$transactionDate][$categoryName] += $transaction->getAmount();
+                }
+            } else {
+                $trash[] = $transaction;
             }
         }
 
-        return $data;
+        return array($data, $trash);
     }
 
     public static function createRow($categories)

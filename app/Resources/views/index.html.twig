@@ -81,5 +81,12 @@
     <div id="control_div"></div>
 </div>
 
+Trash: {{ trash | length }}
+<ul>
+{% for item in trash %}
+    <li>{{ item.description }} || {{ item.keywords | join('|') }}</li>
+{% endfor %}
+</ul>
+
 </body>
 </html>

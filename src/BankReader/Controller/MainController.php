@@ -21,10 +21,11 @@ class MainController
 
         $categories = $this->container->getCategories();
 
-        $data = Adaptor::prepareLineChartData($this->container->getTransactions(), $categories);
+        $returnedArray = Adaptor::prepareLineChartData($this->container->getTransactions(), $categories);
 
         return $template->render(array(
-            'data' => $data,
+            'data' => $returnedArray[0],
+            'trash' => $returnedArray[1],
             'categories' => $categories,
         ));
     }

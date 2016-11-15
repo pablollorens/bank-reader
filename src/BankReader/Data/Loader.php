@@ -59,15 +59,19 @@ class Loader
                 $transaction->setDate(\DateTime::createFromFormat('Ymd', $row[$transactionDateColumn]));
 
                 $amount = floatval($row[$amountColumn]);
+                
                 if ($amount < 0) {
                     $amount *= -1;
+                } else {
+                    continue;
                 }
+
                 $transaction->setAmount($amount);
 
                 $transaction->setDescription($row[$descriptionColumn]);
 
                 // Retrieve keywords
-                $explode = explode(' ', $row[$descriptionColumn]);
+                $explode = explode(' ', str_replace(',', ' ', $row[$descriptionColumn]));
                 $array_map = array_map('strtolower', $explode);
 
                 $transaction->setKeywords($array_map);
