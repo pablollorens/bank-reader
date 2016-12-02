@@ -3,23 +3,20 @@
 namespace BankReader\Core;
 
 use BankReader\Data\Loader;
+use Slim\App;
 use Symfony\Component\Yaml\Yaml;
 use Twig_Loader_Filesystem;
 use Twig_Environment;
 use Twig_Extension_Debug;
 
-abstract class Kernel implements KernelInterface
+abstract class Kernel extends App implements KernelInterface
 {
-    protected $container;
-
-    public function __construct($parametersFile = '')
+    public function __construct(Container $container)
     {
-        $container = new Container();
+        parent::__construct($container);
 
-        $container->addService('kernel', $this);
-
-        $parameters = Yaml::parse(file_get_contents($parametersFile));
-        $container->addService('parameters', $parameters);
+        $parameters = Yaml::parse(file_get_contents($container->get('parameters_file')));
+        $container->add('parameters', $parameters);
 
         // Load Twig
         $loader = new Twig_Loader_Filesystem($this->getRootDir() . '/app/Resources/views');
@@ -30,21 +27,11 @@ abstract class Kernel implements KernelInterface
 
         $twig->addExtension(new Twig_Extension_Debug());
 
-        $container->addService('twig', $twig);
+        $container->add('twig', $twig);
 
         // Load Transactions
-        $transactions = Loader::fromExcelFiles($container);
+        $transactions = Loader::fromExcelFiles($container, $parameters, $this->getRootDir());
 
-        $container->addService('transactions', $transactions);
-
-        $this->container = $container;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getContainer()
-    {
-        return $this->container;
+        $container->add('transactions', $transactions);
     }
 }

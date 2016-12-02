@@ -11,14 +11,14 @@ use BankReader\Core\Container;
 
 class Loader
 {
-    public static function fromExcelFiles(Container $container)
+    public static function fromExcelFiles(Container $container, $parameters, $rootDir)
     {
-        $parameters = $container->getParameters();
+        //$parameters = $container->get('parameters');
 
-        /** @var Kernel $kernel */
-        $kernel = $container->getKernel();
+        //** @var Kernel $kernel */
+        //$kernel = $container->get('kernel');
 
-        $initialFolder = $kernel->getRootDir() . $parameters['data_folder'];
+        $initialFolder = $rootDir . $parameters['data_folder'];
 
         $transactionDateColumn = $parameters['excel']['transaction_date_column'];
         $amountColumn = $parameters['excel']['amount_column'];
@@ -36,7 +36,7 @@ class Loader
             $categories[$name] = $keywords;
         }
 
-        $container->addService('categories', $categories);
+        $container->add('categories', $categories);
 
         $transactions = array();
 

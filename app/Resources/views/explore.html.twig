@@ -1,0 +1,13 @@
+
+{% for category, transactions in rawData %}
+    <h1>{{ category }}</h1>
+    <ul>
+        {% for transaction in transactions %}
+            <li>
+                {{ transaction.amount }} &euro; |
+                {{ transaction.date | date }} |
+                {{ transaction.description }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endfor %}

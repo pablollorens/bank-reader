@@ -10,6 +10,8 @@ class Adaptor
     {
         $data = array();
 
+        $rawData = array();
+
         $trash = array();
 
         /** @var Transaction $transaction */
@@ -24,13 +26,15 @@ class Adaptor
             if (count($transaction->getCategories()) > 0) {
                 foreach ($transaction->getCategories() as $categoryName) {
                     $data[$transactionDate][$categoryName] += $transaction->getAmount();
+                    $rawData[$transactionDate][$categoryName][] = $transaction;
+
                 }
             } else {
                 $trash[] = $transaction;
             }
         }
 
-        return array($data, $trash);
+        return array($data, $rawData, $trash);
     }
 
     public static function createRow($categories)

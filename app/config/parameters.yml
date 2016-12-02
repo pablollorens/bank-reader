@@ -9,6 +9,6 @@ categories:
     - supermarkets: ["heijn", "jumbo", "feyter", "lidl", "slagerij", "mercadona", "aldi", "supermercado"]
     - eat-outside: ["bedrijfsrest", "cafetaria", "hoek", "frituur"]
     - transport: ["picobello", "gabriels"]
-    - fast-food: ["domino's", "mcdonald's", "amigo"]
+    - fast-food: ["domino's", "mcdonald's", "amigo", "molukse"]
     - shopping: ["hema", "kruidvat", "gamma", "ikea", "action", "premaman", "blokker"]
-    #- fix-costs: ["sabewa", "gemeente", "viveria", "doorlopend", "delta", "zeelandnet", "walstraat"]
+    - fix-costs: ["sabewa", "gemeente", "viveria", "investe", "delta", "zeelandnet", "walstraat"] # "doorlopend"

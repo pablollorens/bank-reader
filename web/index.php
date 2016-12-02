@@ -1,18 +1,36 @@
 <?php
 
-require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 error_reporting(E_ALL);
 set_time_limit(0);
 
 date_default_timezone_set('Europe/Amsterdam');
 
-$kernel = new AppKernel();
+$container = new \BankReader\Core\Container(array());
 
-$container = $kernel->getContainer();
+$kernel = new AppKernel($container);
 
-$mainController = new \BankReader\Controller\MainController($container);
+// Define app routes
+$kernel->get('/', function ($request, $response, $args) {
 
-echo $mainController->indexAction();
+    $mainController = new \BankReader\Controller\MainController($this);
 
-exit;
+    $result = $mainController->indexAction();
+
+    return $response->write($result);
+});
+
+$kernel->get('/explore/{date}', function ($request, $response, $args) {
+
+    $date = $request->getAttribute('date');
+
+    $mainController = new \BankReader\Controller\MainController($this);
+
+    $result = $mainController->exploreAction($date);
+
+    return $result;
+});
+
+// Run app
+$kernel->run();
