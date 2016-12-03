@@ -1,7 +1,7 @@
-# bank-reader
+# BankReader
 Parser of excel files with bank transactions
 
-# Installation
+## Installation
 1) Clone repository and run composer.
 ```bash
 > git clone https://github.com/pablollorens/bank-reader
@@ -29,9 +29,6 @@ excel:
 php -S 0.0.0.0:8000 -t web
 ```
 
-# Instructions
+## Use instructions
 - The index view is a graph to explore the expenses. You can comment those categories that you would like to remove from this graph.
-- There is a path to explore in detail the expenses per month. For this you should write in your browser:
-```
-http://localhost:8000/explore/YYYY-mm in your browser
-```
+- There is a path to explore in detail the expenses per month. For this you should write in your browser: `http://localhost:8000/explore/YYYY-mm in your browser`
