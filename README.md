@@ -14,12 +14,12 @@ data_folder: '/web/data'
 
 excel:
     transaction_date_column: 'C'
-        amount_column: 'G'
-        description_column: 'H'
+    amount_column: 'G'
+    description_column: 'H'
     
-    categories:
-        - category_1: ["keyword_1_1", "keyword_1_2", "keyword_1_3"]
-        - category_2: ["keyword_2_1", "keyword_2_2", "keyword_2_3"]
+categories:
+    - category_1: ["keyword_1_1", "keyword_1_2", "keyword_1_3"]
+    - category_2: ["keyword_2_1", "keyword_2_2", "keyword_2_3"]
 ```    
 
 3) Download the excel file(s) with the transactions from your bank and place them in /web/data or any other folder that you may have configured in step 2.
