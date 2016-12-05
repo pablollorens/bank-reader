@@ -8,7 +8,7 @@ Parser of excel files with bank transactions
 > composer install
 ```
 
-2) Configure parameters in /app/config/parameters.yml
+2) Configure parameters in /app/config/parameters.yml. As you can guess "category_X" can be anything you want like "supermarkets" or "restaurants" and the keywords related with every category is what the crawler is going to look for in the descriptions to decide to which category every transaction belongs to.
 ```yaml
 data_folder: '/web/data'
 
